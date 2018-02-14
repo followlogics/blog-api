@@ -21,7 +21,7 @@ $router->options(
     ]
 );
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return view('default',['name' => 'Virus']);//$router->app->version();
 
 });
 $router->post('login/', 'UsersController@authenticate');

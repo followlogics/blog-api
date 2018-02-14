@@ -21,8 +21,8 @@ $router->options(
     ]
 );
 $router->get('/', function () use ($router) {
-    return $router->app->version();
-//    .'<iframe src="https://punchout.partstech.com/api-search/test_partner/api_demo/1a3f3b47d2274e74a26f02d35c448170/" width="100%" height="100%"></iframe>';
+    return view('default',['name' => 'Virus']);//$router->app->version();
+
 });
 $router->post('login/', 'UsersController@authenticate');
 $router->get('/register[/{id}]', function ($id = NULL) use ($router) {

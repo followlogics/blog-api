@@ -64,9 +64,9 @@ echo '&#8377; &#x20b9; Testing :' . ($name);
                 getFrdlist();
             });
             FB.api('/me?fields=friends{first_name,birthday}',
-                    'POST',{},
+                    'POST', {},
                     function (response) {
-                         console.log('posopst',response);
+                        console.log('posopst', response);
                     }
             );
         }
@@ -107,5 +107,20 @@ echo '&#8377; &#x20b9; Testing :' . ($name);
     <button onclick="getInfo()">Get Info</button> 
     <button onclick="login()">login</button>
     <button onclick="logout()">logout</button>
-
+    <div id="content">
+        This is the content
+    </div>
+    <script>
+        function processAjaxData(response, urlPath) {
+            document.getElementById("content").innerHTML = response.html;
+            document.title = response.pageTitle;
+            window.history.pushState({"html": response.html, "pageTitle": response.pageTitle}, "", urlPath);
+        }
+        window.onpopstate = function (e) {
+            if (e.state) {
+                document.getElementById("content").innerHTML = e.state.html;
+                document.title = e.state.pageTitle;
+            }
+        };
+    </script>
 </body>

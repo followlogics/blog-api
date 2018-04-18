@@ -1,0 +1,6 @@
+{
+    "SITE_TITLE": "Blog",
+    "BASE_URL": "http://localhost/test12/blog/public/",
+    "ROOT_URL": "http://localhost/test12/blog/",
+    "UPLOAD_PATH": "storage"
+}

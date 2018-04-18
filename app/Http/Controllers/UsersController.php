@@ -21,9 +21,8 @@ class UsersController extends Controller {
           */
     public function authenticate(Request $request) {
         
-        $requestData = (file_get_contents('php://input'));
-        if ($requestData) {
-            $_POST = json_decode($requestData, TRUE);
+        if (!empty($this->rawData) && (empty($_POST))) {
+            $_POST = $this->rawData;
         }
        
         $this->validate($request, [
@@ -43,6 +42,10 @@ class UsersController extends Controller {
 
             return response()->json(['status' => 'fail'], 401);
         }
+    }
+    
+    public function register(Request $request){
+        
     }
 
 }

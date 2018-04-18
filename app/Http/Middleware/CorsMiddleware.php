@@ -10,6 +10,7 @@ class CorsMiddleware
     protected $settings = array(
         'origin' => '*',    // Wide Open!
         'allowMethods' => 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
+        'exposeHeaders'=>'content-type,api-token',
     );
 
     protected function setOrigin($req, $rsp) {

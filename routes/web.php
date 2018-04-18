@@ -25,12 +25,13 @@ $router->get('/', function () use ($router) {
 
 });
 $router->post('login/', 'UsersController@authenticate');
+$router->post('login/', 'UsersController@register');
 $router->get('/register[/{id}]', function ($id = NULL) use ($router) {
     return 'Hello' . $id;
 });
 $router->group(['middleware' => 'auth'], function () use ($router) {
-    $router->post('/register', function (Request $request) use ($router) {
-        print_r($request->user()->id);
-        return '';
+    $router->post('/signup', function (Request $request) use ($router) {
+        $post=file_get_contents('php://input');
+        return array('status'=>'success','user'=>$post);
     });
 });

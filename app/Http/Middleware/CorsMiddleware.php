@@ -5,21 +5,20 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Response;
 
-class CorsMiddleware
-{
+class CorsMiddleware {
+
     protected $settings = array(
-        'origin' => '*',    // Wide Open!
+        'origin' => '*', // Wide Open!
         'allowMethods' => 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
-        'exposeHeaders'=>'content-type,api-token',
+        'exposeHeaders' => 'content-type,api-token',
     );
 
     protected function setOrigin($req, $rsp) {
         $origin = $this->settings['origin'];
         if (is_callable($origin)) {
             // Call origin callback with request origin
-            $origin = call_user_func($origin,
-                        $req->header("Origin")
-                    );
+            $origin = call_user_func($origin, $req->header("Origin")
+            );
         }
         $rsp->header('Access-Control-Allow-Origin', '*');
     }
@@ -64,8 +63,7 @@ class CorsMiddleware
             if (is_array($allowHeaders)) {
                 $allowHeaders = implode(", ", $allowHeaders);
             }
-        }
-        else {  // Otherwise, use request headers
+        } else {  // Otherwise, use request headers
             $allowHeaders = $req->header("Access-Control-Request-Headers");
         }
         if (isset($allowHeaders)) {
@@ -82,13 +80,13 @@ class CorsMiddleware
             $this->setAllowCredentials($req, $rsp);
             $this->setAllowMethods($req, $rsp);
             $this->setAllowHeaders($req, $rsp);
-        }
-        else {
+        } else {
             $this->setOrigin($req, $rsp);
             $this->setExposeHeaders($req, $rsp);
             $this->setAllowCredentials($req, $rsp);
         }
     }
+
     /**
      * Handle an incoming request.
      *
@@ -99,11 +97,14 @@ class CorsMiddleware
     public function handle($request, Closure $next) {
         if ($request->isMethod('OPTIONS')) {
             $response = new Response("", 200);
-        }
-        else {
+        } else {
             $response = $next($request);
         }
         $this->setCorsHeaders($request, $response);
+        $response = $next($request);
+        $response->header('Access-Control-Allow-Origin', '*');
+        $response->header('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+        $response->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
         return $response;
     }
 }

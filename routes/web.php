@@ -34,4 +34,5 @@ $router->group(['middleware' => 'auth'], function () use ($router) {
         $post=file_get_contents('php://input');
         return array('status'=>'success','user'=>$post);
     });
+    $router->post('/addItem', 'EventsController@addEvent');
 });

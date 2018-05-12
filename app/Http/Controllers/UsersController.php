@@ -22,10 +22,7 @@ class UsersController extends Controller {
           */
     public function authenticate(Request $request) {
 
-//        if (!empty($this->rawData) && (empty($_POST))) {
-//            $_POST = $this->rawData;
-//        }
-//        $_POST = $request->json()->all();
+
         $validator = Validator::make($request->all(), [
                     'email' => 'required|email',
                     'password' => 'required'
@@ -37,8 +34,8 @@ class UsersController extends Controller {
             if ($user && (md5($request->input('password')) == $user->password)) {
 
                 $apikey = base64_encode(str_random(40));
-                User::where('email', $request->input('email'))->update(['api_token' => "$apikey"]);
-                return response()->json(['status' => 'success', 'user' => $user->toArray(), 'api_token' => $apikey]);
+                $r=User::where('email', $request->input('email'))->update(['api_token' => "$apikey"]);
+                return response()->json(['status' => 'success','r'=>$r, 'user' => $user->toArray(), 'api_token' => $apikey]);
             } else {
                 return response()->json(['status' => 'notValid', 'errors' => array('E-mail or Password not match')], 200);
             }
@@ -49,7 +46,7 @@ class UsersController extends Controller {
     }
 
     public function register(Request $request) {
-//        $_POST = $request->json()->all();
+        $_POST = $request->json()->all();
         $validator = Validator::make($request->all(), [
                     'name' => 'required',
                     'email' => 'required|email|unique:users',

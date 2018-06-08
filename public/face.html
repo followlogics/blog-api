@@ -45,6 +45,9 @@
                 max-width: 100%;
             }
         </style>
+        <style id="google-gatt">
+
+        </style>
     </head>
     <body>
         <div id="photo">
@@ -53,9 +56,9 @@
 
         <!-- Here is the datalist is predefined. But in real site it will be generated dynamically -->
         <datalist id="players">
-            <option value="Vikas Kumar">
+            <option value="Vikas Kumar">Vikas</option>
             <option value="Vikas">
-            <option value="Indian">
+            <option value="Indian">Indian</option>
             <option value="Developer">
         </datalist>
 
@@ -84,10 +87,8 @@
                             var y = faces[iii].offsetY;
                             var height = faces[iii].height;
                             var width = faces[iii].width;
-
                             var input_id = iii.toString() + "_input"
                             var input_height = height + 20;
-
                             var input = "<input id='box" + input_id + "' list='players' style='top:" + height + "px'>";
                             var box = "<a class='box' id='box" + iii + "' style='left:" + x + "px; top: " + y + "px; height: " + input_height + "px; width:" + width + "px'>" + input + "</a>";
                             document.getElementById("photo").innerHTML = document.getElementById("photo").innerHTML + box;
@@ -95,6 +96,50 @@
                     }
                 });
             }
+        </script>
+        Hi this is testing
+        <ul class="translation-links">
+            <li><a href="#" class="german" data-lang="Hindi">Hindi</a></li>
+            <li><a href="#" class="german" data-lang="English">English</a></li>
+        </ul>
+
+        <!-- Code from Google -->
+        <div id="google_translate_element"></div>
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({pageLanguage: 'en', autoDisplay: false}, 'google_translate_element');
+            }
+        </script>
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
+
+
+        <script type="text/javascript">
+            function triggerEvent(element, eventName) {
+                var event;
+                var doc = document;
+                if (typeof doc.createEvent != 'undefined') {
+                    event = doc.createEvent('HTMLEvents');
+                    event.initEvent(eventName, true, true);
+                    element.dispatchEvent(event);
+                } else if (typeof doc.createEventObject != 'undefined') {
+                    event = doc.createEventObject();
+                    event.eventType = eventName;
+                    element.fireEvent('on' + event.eventType, event);
+                }
+            }
+
+            $('.translation-links a').click(function (e) {
+                e.preventDefault();
+                var lang = $(this).data('lang');
+                var val = $('#google_translate_element select > option:contains(' + lang + ')').val();
+                $('#google_translate_element select').val(val);
+                var container = document.getElementById('google_translate_element');
+                var select = container.getElementsByTagName('select')[0];
+                triggerEvent(select, 'change');
+            });
+            var t = document.getElementById('google-gatt');
+            t.innerText = '#goog-gt-tt{}';
+            var styles = '#goog-gt-tt{display: none !important;}.goog-text-highlight {background-color:transparent !important;box-shadow: none !important;}';
         </script>
     </body>
 </html>

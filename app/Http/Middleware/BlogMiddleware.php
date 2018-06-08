@@ -14,7 +14,7 @@ class BlogMiddleware {
      * @return mixed
      */
     public function handle($request, Closure $next) {
-//        return $next($request);
+        $response= $next($request);
         /* add Allowed Domain */
         $allowedDomains = array("http://localhost:8100");
         $origin = $request->server('HTTP_ORIGIN');

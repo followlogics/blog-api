@@ -45,6 +45,9 @@
                 max-width: 100%;
             }
         </style>
+        <style id="google-gatt">
+
+        </style>
     </head>
     <body>
         <div id="photo">
@@ -53,9 +56,9 @@
 
         <!-- Here is the datalist is predefined. But in real site it will be generated dynamically -->
         <datalist id="players">
-            <option value="Vikas Kumar">
+            <option value="Vikas Kumar">Vikas</option>
             <option value="Vikas">
-            <option value="Indian">
+            <option value="Indian">Indian</option>
             <option value="Developer">
         </datalist>
 
@@ -134,7 +137,9 @@
                 var select = container.getElementsByTagName('select')[0];
                 triggerEvent(select, 'change');
             });
-
+            var t = document.getElementById('google-gatt');
+            t.innerText = '#goog-gt-tt{}';
+            var styles = '#goog-gt-tt{display: none !important;}.goog-text-highlight {background-color:transparent !important;box-shadow: none !important;}';
         </script>
     </body>
 </html>

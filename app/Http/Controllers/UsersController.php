@@ -7,7 +7,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\User;
-
+use Libraries\PHPqrcode\VikCode\VikCode as VikCode;
+use QRbitstream;
+use QRcode;
+use QRencode;
+use QRimage;
+use QRinput;
+use QRinputItem;
+use QRmask;
+use QRrawcode;
+use QRrs;
+use QRrsItem;
+use QRrsblock;
 class UsersController extends Controller {
 
     function __construct() {
@@ -64,6 +75,14 @@ class UsersController extends Controller {
         } else {
             return response()->json(['status' => 'notValid', 'errors' => $validator->errors()->all()], 200);
         }
+    }
+    public function qrcode(Request $request){
+        // we building raw data 
+        $codeContents = 'https://github.com/VikashAmbani/'; 
+        /** using file path  */ 
+        //  $qr=QRcode::png($codeContents,'vikQrcode.png',QR_ECLEVEL_L, 3);
+         /** direct qr code */
+         QRcode::png($codeContents);
     }
 
 }

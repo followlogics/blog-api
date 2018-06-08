@@ -26,6 +26,7 @@ $router->get('/', function () use ($router) {
 });
 $router->post('login/', 'UsersController@authenticate');
 $router->post('signup/', 'UsersController@register');
+$router->get('qr/', 'UsersController@qrcode');
 $router->get('/register[/{id}]', function ($id = NULL) use ($router) {
     return 'Hello' . $id;
 });

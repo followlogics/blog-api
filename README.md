@@ -4,7 +4,7 @@ this repo in development mode.
 Create Event and Generate Ticket with QrCode
 
 run this command to add qrcode 
-composer dump-autoload 
+# composer dump-autoload 
 
 and add this line of code in your controller 
 

@@ -33,7 +33,7 @@ namespace Libraries\PHPqrcode\VikCode;
 
 		public static function qrcode()
         {
-			echo 'hello';
+			
 			$QR_BASEDIR = dirname(__FILE__).DIRECTORY_SEPARATOR;
 			include $QR_BASEDIR."qrconst.php";
 			include $QR_BASEDIR."qrconfig.php";

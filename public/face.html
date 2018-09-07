@@ -44,9 +44,54 @@
             {
                 max-width: 100%;
             }
+            .goog-te-gadget{
+                font-size: 0px !important;
+            }
+            .goog-te-gadget .goog-te-combo {
+                color: #666 !important;
+                background: #fff !important;
+                border: 1px solid #ddd;
+                outline: none;
+                font-size: 10pt;
+            }
+            .skiptranslate.goog-te-gadget > span {
+                display: none;
+            }
+            #google_translate_element{
+                display:none !important;
+                position: fixed;
+                right: 0;
+                top: 16%;
+                z-index: 99999;
+                background: #cacaca;
+                color: #3d3a49;
+                width: 190px;
+                padding: 5px 5px;
+                border-radius: 57px;
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+                margin-right: -155px;
+                transition: all 0.7s ease;
+            }
+            div#google_translate_element:hover {
+                margin-right: 0px;
+            }
+            #google_translate_element label{
+                float: left;
+                margin-right: 8px;
+                margin-bottom: 0;
+                font-size: 21px;
+                margin-left: 5px;
+                line-height: normal;
+                padding: 2px 0px 0px;
+            }
+            body.shops #google_translate_element,
+            body.customer #google_translate_element{
+                display:block !important;
+            }
         </style>
         <style id="google-gatt">
-
+#goog-gt-tt{display: none !important;}.goog-text-highlight {background-color:transparent !important;box-shadow: none !important;}
         </style>
     </head>
     <body>
@@ -64,7 +109,7 @@
 
         <!--  Here "picture1" can be the unique id of an image. -->
         <button onclick="load_picture('picture1', 'me.jpg')">Load My Image</button>
-
+	<button onClick="hideGoogle()">Hide google things</button>
         <script>
             function load_picture(id, filename)
             {
@@ -140,6 +185,10 @@
             var t = document.getElementById('google-gatt');
             t.innerText = '#goog-gt-tt{}';
             var styles = '#goog-gt-tt{display: none !important;}.goog-text-highlight {background-color:transparent !important;box-shadow: none !important;}';
+function hideGoogle(){
+var t = document.getElementById('google-gatt');
+            t.innerText = styles;
+}
         </script>
     </body>
 </html>

@@ -1,0 +1,32 @@
+/*
+    Created on : 29 Aug, 2018, 1:04:28 PM
+    Author     : vikas
+*/
+body {
+    background-color: powderblue;
+    height:1000px;
+}
+.v-h1{
+    position:fixed;
+    width:100%;
+}
+textarea{
+    resize: none;
+}
+#results{
+    min-height: 365px;
+    max-height: 365px;
+    overflow: scroll;
+}
+.str
+{
+    color: green;
+}
+.obj
+{
+    font-weight: bold;
+}
+.num
+{
+    color: red;
+}

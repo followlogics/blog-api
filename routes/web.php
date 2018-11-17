@@ -21,12 +21,13 @@ $router->options(
     ]
 );
 $router->get('/', function () use ($router) {
-    return view('default',['name' => 'Virus']);//$router->app->version();
-
+    return view('default',['name' => $router->app->version()]);
 });
 $router->post('login/', 'UsersController@authenticate');
 $router->post('signup/', 'UsersController@register');
+$router->post('filetime/', 'UsersController@fileupload');
 $router->get('qr/', 'UsersController@qrcode');
+$router->get('notify/', 'UsersController@notify');
 $router->get('/register[/{id}]', function ($id = NULL) use ($router) {
     return 'Hello' . $id;
 });

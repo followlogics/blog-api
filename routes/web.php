@@ -21,7 +21,8 @@ $router->options(
     ]
 );
 $router->get('/', function () use ($router) {
-    return view('default',['name' => $router->app->version()]);
+    $files= App\Appfile::paginate(5);
+    return view('default',['files' => $files,'name' => $router->app->version()]);
 });
 $router->post('login/', 'UsersController@authenticate');
 $router->post('signup/', 'UsersController@register');
@@ -31,6 +32,7 @@ $router->get('notify/', 'UsersController@notify');
 $router->get('/register[/{id}]', function ($id = NULL) use ($router) {
     return 'Hello' . $id;
 });
+$router->get('app-files/', 'AppfilesController@getall');
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->post('/desktop', function (Request $request) use ($router) {
         $post=file_get_contents('php://input');

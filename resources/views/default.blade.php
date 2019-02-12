@@ -23,6 +23,11 @@
                 </li>
             </ul>
         </nav>
+        @foreach ($files as $file)
+        <br/>{{ $file->realfile_name }}
+       @endforeach
+
+       {{ $files->links() }}
         <?php
         $configFile = (base_path('public/media/config.json'));
         $myfile = fopen($configFile, "r+") or die("Unable to open file!");
@@ -139,6 +144,10 @@
                             $('#myModal').modal('toggle');
                             this.changeUrl(targetedUrl);
                             break;
+                        default :
+                        jQuery.ajax({url: url + '/app-files',success: function (data) {
+                            console.log(data);
+                        }});        
                     }
                 },
                 changeUrl: function (url) {
@@ -212,7 +221,7 @@
             })
             window.onresize = function ()
             {
-                if ((window.outerHeight - window.innerHeight) > 100)
+                 if ((window.outerHeight - window.innerHeight) > 100)
                     $('html').remove();
             }
             var oldHref = document.location.href;

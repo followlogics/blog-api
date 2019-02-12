@@ -20,6 +20,7 @@ use QRrs;
 use QRrsItem;
 use QRrsblock;
 use Illuminate\Support\Facades\File;
+use App\Appfile;
 
 class UsersController extends Controller {
 
@@ -128,14 +129,19 @@ class UsersController extends Controller {
         $this->validate($request, [
             'your_data' => 'required|image|mimes:apk,jpeg,png,jpg|max:12048',
         ]);
+        
         $file = $request->file('your_data');
-        $picName = $file->getClientOriginalName();
+        $realName = $file->getClientOriginalName();
         $picName = uniqid() . '_.' . $file->getClientOriginalExtension();
         $path = 'media' . DIRECTORY_SEPARATOR . 'time' . DIRECTORY_SEPARATOR;
         $destinationPath = storage_path($path);
         File::makeDirectory($destinationPath, 0777, true, true);
         if ($file->move($destinationPath, $picName)) {
-            return response()->json(['status' => 'success', 'fileName' => $picName], 200);
+         $f=Appfile::create(array(
+            'realfile_name' => $realName,
+            'file_name' => $picName
+         ));
+            return response()->json(['status' => 'success', 'fileName' => $f], 200);
         } else {
             return response()->json(['status' => 'notValid', 'errors' => $validator->errors()->all()], 200);
         }

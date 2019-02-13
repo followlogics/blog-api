@@ -1,5 +1,10 @@
 <?php
-
+$url = parse_url(getenv("DATABASE_URL"));
+//print_r($url);exit;
+$host = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$database = substr($url["path"], 1);
 return [
 
    'default' => 'postgres',
@@ -20,15 +25,16 @@ return [
 
         'postgres' => [
             'driver'    => 'pgsql',
-            'host'      => env('DB_HOST','localhost'),
-            'port'      => env('DB_PORT','5432'),
-            'database'  => env('DB_DATABASE','blog'),
-            'username'  => env('DB_USERNAME','root'),
-            'password'  => env('DB_PASSWORD','123456'),
+            'host'     => $host,
+            'port'      => '5432',
+            'database' => $database,
+            'username' => $username,
+            'password' => $password,
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
-            'strict'    => false
+            'strict'    => false,
+            'schema'   => 'public',
         ],
     ],
 ];

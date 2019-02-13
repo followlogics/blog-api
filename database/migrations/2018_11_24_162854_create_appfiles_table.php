@@ -15,9 +15,9 @@ class CreateAppfilesTable extends Migration
     {
         Schema::create('appfiles', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id', false, TRUE);
-            $table->addColumn('text','realfile_name');
-            $table->addColumn('text','file_name');
+            $table->integer('user_id', false, TRUE)->nullable();
+            $table->addColumn('text','realfile_name')->nullable();
+            $table->addColumn('text','file_name')->nullable();
             $table->timestamps();
         });
     }

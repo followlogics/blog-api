@@ -3,9 +3,10 @@ $url = parse_url(getenv("DATABASE_URL"));
 //print_r($url);exit;
 $host = $url["host"];
 $username = $url["user"];
+$port = $url["port"];
 $password = $url["pass"];
 $database = substr($url["path"], 1);
-return [
+$db= [
 
    'default' => 'postgres',
 
@@ -26,7 +27,7 @@ return [
         'postgres' => [
             'driver'    => 'pgsql',
             'host'     => $host,
-            'port'      => '5432',
+            'port'      => $port,
             'database' => $database,
             'username' => $username,
             'password' => $password,
@@ -38,3 +39,6 @@ return [
         ],
     ],
 ];
+//echo '<pre>';
+//print_r($db);exit;
+return $db;

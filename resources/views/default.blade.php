@@ -6,6 +6,13 @@
         <meta _vik name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link _vik rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <link _vik href="{{ url('media/main.css') }}" rel="stylesheet">
+        <script _vik async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script _vik>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-1298952328055943",
+    enable_page_level_ads: true
+  });
+</script>
     </head>
     <body _vik id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
         <nav _vik class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">

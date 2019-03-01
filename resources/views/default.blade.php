@@ -148,6 +148,7 @@ echo fread($myfile, filesize($configFile));
         <script _vik>
             var url = '{{env("BASE_URL")}}';
             config.ROOT_URL = '{{env("ROOT_URL")}}';
+            config.BASE_URL = '{{env("BASE_URL")}}';
             var targetedUrl = location.href.replace(url, '');
             function processAjaxData(response, urlPath) {
                 document.getElementById("content").innerHTML = response.html;

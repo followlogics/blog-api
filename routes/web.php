@@ -25,6 +25,8 @@ $router->get('/', function () use ($router) {
     return view('default',['files' => $files,'name' => $router->app->version()]);
 });
 $router->post('login/', 'UsersController@authenticate');
+$router->post('loginform/', 'UsersController@loginForm');
+$router->post('signupform/', 'UsersController@signupForm');
 $router->post('signup/', 'UsersController@register');
 $router->post('filetime/', 'UsersController@fileupload');
 $router->get('qr/', 'UsersController@qrcode');

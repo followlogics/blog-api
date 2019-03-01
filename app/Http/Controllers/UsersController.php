@@ -21,6 +21,7 @@ use QRrsItem;
 use QRrsblock;
 use Illuminate\Support\Facades\File;
 use App\Appfile;
+use App\Usertoken;
 
 class UsersController extends Controller {
 
@@ -60,21 +61,28 @@ class UsersController extends Controller {
     }
 
     public function register(Request $request) {
-        $_POST = $request->json()->all();
-        $validator = Validator::make($request->all(), [
+        $_POST = $request->all();
+        $type="direct";
+        if(isset($_POST['from']) && $_POST['from']=='googleplus'){
+            $_POST['password']=str_random(15);
+            $type="googleplus";
+        }
+        $validator = Validator::make($_POST, [
                     'name' => 'required',
                     'email' => 'required|email|unique:users',
                     'password' => 'required',
         ]);
-        if (!$validator->fails() || 1) {
-            User::create(array('email' => $_POST['email'],
+        if (!$validator->fails()) {
+            $id=User::create(array(
+                'email' => $_POST['email'],
                 'password' => $_POST['password'],
-                'name' => $_POST['name']
-            ));
-            $user = User::where('email', $_POST['email'])->first();
+                'name' => $_POST['name'],
+                'address'=>'India',
+                'dob'=>date('Y-m-d')
+            ))->id;
             $apikey = base64_encode(str_random(40));
-            $u = User::where('email', $request->input('email'))->update(['api_token' => "$apikey"]);
-            return response()->json(['status' => 'success', 'user' => $user->toArray(), 'api_token' => $apikey]);
+            $u = Usertoken::create(['user_id'=>$id,'api_token' => "$apikey",'social_media_type'=>$type]);
+            return response()->json(['status' => 'success', 'api_token' => $apikey]);
         } else {
             return response()->json(['status' => 'notValid', 'errors' => $validator->errors()->all()], 200);
         }
@@ -144,6 +152,26 @@ class UsersController extends Controller {
             return response()->json(['status' => 'success', 'fileName' => $f], 200);
         } else {
             return response()->json(['status' => 'notValid', 'errors' => $validator->errors()->all()], 200);
+        }
+    }
+    
+    public function loginForm(Request $request){
+
+        if($request->ajax()) {
+            $view=view('loginform')->render();
+           return response()->json(['html'=>$view,'title'=>'Login']);;
+        } else {
+          return view('loginform');
+        }
+    }
+    
+    public function signupForm(Request $request){
+
+        if($request->ajax()) {
+            $view=view('signupform')->render();
+           return response()->json(['html'=>$view,'title'=>'Sign Up']);;
+        } else {
+          return view('loginform');
         }
     }
 

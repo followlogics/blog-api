@@ -4,58 +4,92 @@
         <title _vik><?= $title ?></title>
         <meta charset = "UTF-8" _vik>
         <meta _vik name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link _vik rel="stylesheet" href="{{ url('media/bootstrap.min.css') }}">
-        <link _vik href="{{ url('media/main.css') }}" rel="stylesheet">
-        <script _vik src="{{ url('media/library.js') }}" ></script>
-        <script _vik src="{{ url('media/social.js') }}" ></script>
+        <meta name="google-signin-scope" content="profile email">
+        <meta name="google-signin-client_id" content="539161760083-8rg6soj4ome8jgg3dp257oeq2iaue4u0.apps.googleusercontent.com">
+        <link _vik rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <style _vik><?php
+$configFile = (base_path('public/media/bootstrap.min.css'));
+$myfile = fopen($configFile, "r+") or die("Unable to open file!");
+echo fread($myfile, filesize($configFile));
+?>
+        </style>
+        <style _vik><?php
+$configFile = (base_path('public/media/main.css'));
+$myfile = fopen($configFile, "r+") or die("Unable to open file!");
+echo fread($myfile, filesize($configFile));
+?>
+        </style>
+        <script _vik >
+        <?php
+$configFile = (base_path('public/media/library.js'));
+$myfile = fopen($configFile, "r+") or die("Unable to open file!");
+echo fread($myfile, filesize($configFile));
+?>
+        </script>
+        <script _vik >
+        <?php
+$configFile = (base_path('public/media/social.js'));
+$myfile = fopen($configFile, "r+") or die("Unable to open file!");
+echo fread($myfile, filesize($configFile));
+?>
+    var config = {};
+        </script>
         <script _vik async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script _vik>
-  (adsbygoogle = window.adsbygoogle || []).push({
+        <script _vik>
+(adsbygoogle = window.adsbygoogle || []).push({
     google_ad_client: "ca-pub-1298952328055943",
     enable_page_level_ads: true
-  });
-</script>
+});
+        </script>
     </head>
     <body _vik id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
-        <nav _vik class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
-            <!-- Brand/logo -->
-            <a _vik class="navbar-brand" href="#">My Task is completed</a>
-            <ul _vik class="navbar-nav">
-                <li _vik class="nav-item">
-                    <a _vik class="nav-link" href="/">Home <?php echo '&#8377; &#x20b9; :'; ?></a>
-                </li>
-                <li _vik class="nav-item">
-                    <a _vik class="nav-link" href="login">Login</a>
-                </li>
-                <li _vik class="nav-item">
-                    <a _vik class="nav-link" href="signup">Signup</a>
-                </li>
-            </ul>
+        <nav _vik class="navbar navbar-expand-sm navbar-fixed-top navbar-light navbartransparent navbar-inverse sticky-top">
+            <div _vik class="container">
+                <a _vik class="navbar-brand" href="#"><img src="" id="siteLogo" style="width: 50px" class="hide" />My Task is VKRAB</a>
+                <button _vik class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbars">
+                    <span _vik class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Brand/logo -->
+                <div class="collapse navbar-collapse" id="navbars" _vik>
+                    <ul _vik class="navbar-nav">
+                        <li _vik class="nav-item">
+                            <a _vik class="nav-link" href="/">Home <?php echo '&#8377; &#x20b9; :'; ?></a>
+                        </li>
+                        <li _vik class="nav-item">
+                            <a _vik class="nav-link" data-href="login" href="login">Login</a>
+                        </li>
+                        <li _vik class="nav-item">
+                            <a _vik class="nav-link" data-href="signup" href="signup">Signup</a>
+                        </li>
+                        <li class="nav-item"> <div class="g-signin2" data-onsuccess="onSignIn" data-onload="false" data-theme="dark"></div></li>
+                    </ul>
+                </div>
+            </div>
         </nav>
-        <div id="demo" class="carousel slide" data-ride="carousel">
+        <div id="demo" class="carousel slide" data-ride="carousel" _vik>
 
             <!-- Indicators -->
-            <ul class="carousel-indicators">
+            <ul class="carousel-indicators" _vik>
                 @foreach ($files as $f=>$file)
-                <li data-target="#demo" data-slide-to="{{$f}}" class="@if($f==0)  active @endif"></li>
-                 @endforeach
+                <li data-target="#demo" data-slide-to="{{$f}}" class="@if($f==0)  active @endif" _vik></li>
+                @endforeach
             </ul>
-            <div class="carousel-inner">
+            <div class="carousel-inner" _vik>
                 @foreach ($files as $f=>$file)
-                <div class="carousel-item @if($f==0)  active @endif">
-                    <img src="{{ URL::asset('../storage/media/time/'.$file->file_name) }}" alt="{{$file->realfile_name}}"  width="1100" height="500"/>
+                <div class="carousel-item @if($f==0)  active @endif" _vik>
+                    <img src="{{ URL::asset('../storage/media/time/'.$file->file_name) }}" alt="{{$file->realfile_name}}"  width="1100" height="500" _vik />
                 </div>
                 @endforeach
             </div>
-            <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
+            <a class="carousel-control-prev" href="#demo" data-slide="prev" _vik>
+                <span class="carousel-control-prev-icon" _vik></span>
             </a>
-            <a class="carousel-control-next" href="#demo" data-slide="next">
-                <span class="carousel-control-next-icon"></span>
+            <a class="carousel-control-next" href="#demo" data-slide="next" _vik>
+                <span class="carousel-control-next-icon" _vik></span>
             </a>
         </div>
 
-       {{ $files->links() }}
+
         <?php
         $configFile = (base_path('public/media/config.json'));
         $myfile = fopen($configFile, "r+") or die("Unable to open file!");
@@ -64,7 +98,7 @@
         if (!empty($configData)) {
             ?>
             <script _vik>
-                var config =<?php echo $config ?>;
+                config =<?php echo $config ?>;
             </script>
             <?php
         }
@@ -75,8 +109,8 @@
                 <div class="col-sm-6" _vik >
                     <div class="" _vik>
                         <textarea _vik class="w-100 mt-3" placeholder="Enter json" rows="15"></textarea>
-     </div>
-  </div>
+                    </div>
+                </div>
                 <div class="col-sm-6" _vik >
                     <div class="" _vik>
                         <div class="border border-info mt-3" _vik id="results">
@@ -92,27 +126,28 @@
             </div>
             <div _vik class="row">
                 <input _vik type="file" name="filetime" title="File you want" onchange="fileZone(this)" />
-            </div>
-  
-            <div class="modal fade" _vik id="myModal">
-                <div _vik class="modal-dialog modal-dialog-centered">
-                    <div _vik class="modal-content">
-                        <div _vik class="modal-header">
-                            <h4 _vik class="modal-title">Login</h4>
-                            <button _vik type="button" class="close" data-dismiss="modal">&times;</button>
-</div>
-                        <div _vik class="modal-body">
-                            Modal body..
-                        </div>
-                        <div _vik class="modal-footer">
-                            <button _vik type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
+            </div>          
+        </div>
+        <div class="modal fade in" _vik id="myModal">
+            <div _vik class="modal-dialog modal-dialog-centered modal-sm">
+                <div _vik class="modal-content">
+                    <div _vik class="modal-header">
+                        <h4 _vik class="modal-title">Login</h4>
+                        <button _vik type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div _vik class="modal-body">
+                        Modal body..
+                    </div>
+                    <div _vik class="modal-footer hide">
+                        <button _vik type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
+
         <script _vik>
-            var url = '{{url()}}';
+            var url = '{{env("BASE_URL")}}';
+            config.ROOT_URL = '{{env("ROOT_URL")}}';
             var targetedUrl = location.href.replace(url, '');
             function processAjaxData(response, urlPath) {
                 document.getElementById("content").innerHTML = response.html;
@@ -126,25 +161,24 @@
                 }
             };
             /* DOM content change detect */
-            
+
 
             MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
             var observer = new MutationObserver(window.Virus.domValidation);
 
             observer.observe(document, {subtree: true, attributes: true, childList: true, characterData: true, attributeOldValue: true, attributeNewValue: true});
-            
+
             document.addEventListener('click', function (e) {
                 if (e.target.tagName == "A") {
                     e.preventDefault();
-                    targetedUrl = e.target.href.replace(url, '');
-                    Virus.openTargetBlock()
+                    Virus.openTargetBlock($(e.target).data('href'));
 //                    console.log('BUTTON CLICKED', e);
                 }
             })
             window.onresize = function ()
             {
-                 if ((window.outerHeight - window.innerHeight) > 100)
+                if ((window.outerHeight - window.innerHeight) > 100)
                     $('html').remove();
             }
             var oldHref = document.location.href;
@@ -222,5 +256,6 @@
 //                });
 //            }
         </script>
+        <script src="https://apis.google.com/js/platform.js" ></script>
     </body>
 </html>

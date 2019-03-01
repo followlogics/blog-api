@@ -8,17 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract
-{
+/**
+ * Description of Userstoken
+ *
+ * @author vikas
+ */
+class Usertoken  extends Model implements AuthenticatableContract, AuthorizableContract{
+
     use Authenticatable, Authorizable;
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+    protected $table = 'users_token';
+    protected $primaryKey = 'token_id';
     protected $fillable = [
-        'password', 'email','name','address','dob'
+        'token_id','user_id', 'api_token', 'social_media_type'
     ];
 
     /**
@@ -27,6 +34,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password',
+        'user_id','token_id'
     ];
+
 }

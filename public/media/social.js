@@ -85,10 +85,11 @@ function logout() {
 }
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    var data = {from: 'googleplus', id: profile.getId(), name: profile.getName(), lastName: profile.getFamilyName(),
+        firstName: profile.getGivenName(), email: profile.getEmail(), img: profile.getImageUrl()};
+    jQuery('#siteLogo').attr('src', profile.getImageUrl());
+    jQuery('#siteLogo').removeClass('hide');
+    Virus.setHtmlOnPopup({url: 'signup', data: data});
 }
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
@@ -185,7 +186,9 @@ window.onresize = function () {
 /* DOM content change detect */
 window.Virus = {
     starts: function () {
-        this.openTargetBlock()
+        var url = window.location.href.replace(config.ROOT_URL, '');
+        this.openTargetBlock(url);
+
     },
     domValidation: function (mutations, observer) {
 
@@ -195,7 +198,7 @@ window.Virus = {
                 var allEle = document.querySelectorAll(ele);
                 if (allEle.length) {
                     allEle.forEach(function (v) {
-                        // v.parentNode.removeChild(v);
+//                        v.parentNode.removeChild(v);
                     })
                 }
                 if (mutation.addedNodes.length) {
@@ -219,19 +222,22 @@ window.Virus = {
             }
         });
     },
-    openTargetBlock: function () {
+    openTargetBlock: function (targetedUrl) {
+        url = config.ROOT_URL;
         switch (targetedUrl) {
-            case '/login':
-                $('#myModal').modal('toggle');
-                this.changeUrl(targetedUrl);
+            case 'login':
+                $('#myModal').modal('show');
+//                this.changeUrl(url + targetedUrl);
+                this.setHtmlOnPopup({url: 'loginform'});
                 break;
-            case '/signup':
-                $('#myModal').modal('toggle');
-                this.changeUrl(targetedUrl);
+            case 'signup':
+                $('#myModal').modal('show');
+//                this.changeUrl(url + targetedUrl);
+                this.setHtmlOnPopup({url: 'signupform'});
                 break;
             default:
                 jQuery.ajax({
-                    url: url + '/app-files', success: function (data) {
+                    url: config.BASE_URL + 'app-files', success: function (data) {
 //                        console.log(data);
                     }
                 });
@@ -289,5 +295,36 @@ window.Virus = {
                 el.remove();
             }
         }
+    },
+    setHtmlOnPopup: function (obj) {
+        var url = (obj.url ? config.BASE_URL + obj.url : config.BASE_URL);
+        var data = (obj.data ? obj.data : '');
+        var formData = new FormData();
+        if (data) {
+            for (var i in data) {
+                formData.append(i, data[i]);
+            }
+        }
+        jQuery.ajax({
+            type: "POST",
+            url: url,
+            success: function (data) {
+                if (data.html) {
+                    $('#myModal').find('.modal-body').html(data.html);
+                    $('#myModal').find('.modal-title').html(data.title);
+                } else {
+
+                }
+            },
+            error: function (error) {
+
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            timeout: 60000
+        });
     }
 };

@@ -9,19 +9,20 @@
     <span _vik>or</span>
     <div class="line r" _vik></div>
 </div>
-<form _vik onsubmit="return false">
+<form _vik autocomplete="off" id="loginForm" method="post" >
+        <input autocomplete="off" name="hidden" type="text" style="display:none;">
     <div class="input-group form-group" _vik>
         <div class="input-group-prepend" _vik>
             <span class="input-group-text" _vik><i class="fas fa-user" _vik></i></span>
         </div>
-        <input type="text" class="form-control" placeholder="username" _vik />
+        <input type="text" autocomplete="off" name="login_mail" class="form-control" placeholder="username or e-mail" _vik />
 
     </div>
     <div class="input-group form-group" _vik>
         <div class="input-group-prepend" _vik>
             <span class="input-group-text" _vik><i class="fas fa-key" _vik></i></span>
         </div>
-        <input type="password" class="form-control" placeholder="password" _vik />
+        <input type="password" autocomplete="new-password" name="login_pass" class="form-control" placeholder="password" _vik />
     </div>
     <div class="row align-items-center remember hide" _vik>
         <input type="checkbox" _vik />Remember Me
@@ -38,7 +39,14 @@
     <div class="d-flex justify-content-center" _vik>
         <a href="#" _vik>Forgot your password?</a>
     </div>
-    <div class="g-signin2 " data-onsuccess="onSignIn" data-theme="dark"></div>
-
 </div>
+<script >
+jQuery(document).on('submit','#loginForm',function(e){
+    e.preventDefault();
+    var data=jQuery('#loginForm').serialize();
+    Virus.api({url: 'login', sdata:data ,callback:function(){
+            Virus.openTargetBlock('dashboard');
+    }});
+})
+</script>
 

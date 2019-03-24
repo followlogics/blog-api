@@ -11,24 +11,25 @@
         <div class="line r" _vik></div>
     </div>
     <div class="content" _vik>
-        <form _vik>
+        <form autocomplete="off" _vik id="signupForm" method="post" >
+        <input autocomplete="off" name="hidden" type="text" style="display:none;">
             <div class="input-group form-group" _vik>
                 <div class="input-group-prepend" _vik>
                     <span class="input-group-text" _vik><i class="fas fa-envelope" _vik></i></span>
                 </div>
-                <input type="text" class="form-control" placeholder="E-mail" _vik />
+                <input type="text" name="reg_mail" class="form-control" autocomplete="off" placeholder="E-mail" _vik />
             </div>
             <div class="input-group form-group" _vik>
                 <div class="input-group-prepend" _vik>
                     <span class="input-group-text" _vik><i class="fas fa-user" _vik></i></span>
                 </div>
-                <input type="text" class="form-control" placeholder="username" _vik />
+                <input type="text" name="reg_name" class="form-control" autocomplete="offx" placeholder="name" _vik />
             </div>
             <div class="input-group form-group" _vik>
                 <div class="input-group-prepend" _vik>
                     <span class="input-group-text" _vik><i class="fas fa-key" _vik></i></span>
                 </div>
-                <input type="password" class="form-control" placeholder="password" _vik />
+                <input type="password" name="reg_pass" class="form-control" autocomplete="new-password" placeholder="password" _vik />
             </div>
             <div class="row align-items-center remember hide" _vik>
                 <input type="checkbox" _vik />Remember Me
@@ -41,5 +42,11 @@
             Already have an account? <a  data-href="login" href="login" _vik>Login</a>
         </div>
     </div>
-
+<script >
+jQuery(document).on('submit','#signupForm',function(e){
+    e.preventDefault();
+    var data=jQuery('#signupForm').serialize();
+    Virus.api({url: 'signup', sdata:data });
+})
+</script>
 </div>

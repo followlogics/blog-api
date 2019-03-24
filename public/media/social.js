@@ -89,7 +89,7 @@ function onSignIn(googleUser) {
         firstName: profile.getGivenName(), email: profile.getEmail(), img: profile.getImageUrl()};
     jQuery('#siteLogo').attr('src', profile.getImageUrl());
     jQuery('#siteLogo').removeClass('hide');
-    Virus.setHtmlOnPopup({url: 'signup', data: data});
+    Virus.api({url: 'signup', data: data});
 }
 function signOut() {
     var auth2 = gapi.auth2.getAuthInstance();
@@ -185,10 +185,16 @@ window.onresize = function () {
 }
 /* DOM content change detect */
 window.Virus = {
+    popsate: false,
     starts: function () {
         var url = window.location.href.replace(config.ROOT_URL, '');
+        var th = this;
         this.openTargetBlock(url);
-
+        window.onpopstate = function (event) {
+            var url = window.location.href.replace(config.ROOT_URL, '');
+            th.popsate = true;
+            th.openTargetBlock(url);
+        };
     },
     domValidation: function (mutations, observer) {
 
@@ -198,7 +204,7 @@ window.Virus = {
                 var allEle = document.querySelectorAll(ele);
                 if (allEle.length) {
                     allEle.forEach(function (v) {
-//                        v.parentNode.removeChild(v);
+                        v.parentNode.removeChild(v);
                     })
                 }
                 if (mutation.addedNodes.length) {
@@ -227,24 +233,33 @@ window.Virus = {
         switch (targetedUrl) {
             case 'login':
                 $('#myModal').modal('show');
-//                this.changeUrl(url + targetedUrl);
-                this.setHtmlOnPopup({url: 'loginform'});
+                this.changeUrl(url + targetedUrl, 'Login');
+                this.api({url: 'loginform', preCallback: true, afterCallback: "afterCallback"});
                 break;
             case 'signup':
                 $('#myModal').modal('show');
-//                this.changeUrl(url + targetedUrl);
-                this.setHtmlOnPopup({url: 'signupform'});
+                this.changeUrl(url + targetedUrl, 'Signup');
+                this.api({url: 'signupform', preCallback: true, afterCallback: "afterCallback"});
                 break;
+            case 'dashboard':
+                this.changeUrl(url + targetedUrl, 'dashboard');
+                this.dashboard();
             default:
-                jQuery.ajax({
-                    url: config.BASE_URL + 'app-files', success: function (data) {
+                $('#myModal').modal('hide');
+//                jQuery.ajax({
+//                    url: config.BASE_URL + 'app-files', success: function (data) {
 //                        console.log(data);
-                    }
-                });
+//                    }
+//                });
         }
     },
-    changeUrl: function (url) {
-        window.history.pushState({}, "", url);
+    changeUrl: function (url, title) {
+        if (this.popsate != true) {
+            window.history.pushState({}, title, url);
+            jQuery("title").text("Blog :: " + title);
+        } else {
+            this.popsate = false;
+        }
     },
     documentUpload: function (obj) {
         var file = $(obj)[0].files[0];
@@ -296,7 +311,20 @@ window.Virus = {
             }
         }
     },
-    setHtmlOnPopup: function (obj) {
+    setPopData: function (obj) {
+        if (typeof obj.html != 'undefined') {
+            $('#myModal').find('.modal-title').html(obj.title);
+            $('#myModal').find('.modal-body').html(obj.html);
+        } else {
+            $('#myModal').find('.modal-body').html('Loading...');
+            $('#myModal').find('.modal-title').html('Loading...');
+        }
+    },
+    api: function (obj) {
+        var th = this;
+        if (typeof obj.preCallback != 'undefined' && obj.preCallback) {
+            this.setPopData(obj);
+        }
         var url = (obj.url ? config.BASE_URL + obj.url : config.BASE_URL);
         var data = (obj.data ? obj.data : '');
         var formData = new FormData();
@@ -304,16 +332,22 @@ window.Virus = {
             for (var i in data) {
                 formData.append(i, data[i]);
             }
+        } else {
+            formData = obj.sdata;
         }
         jQuery.ajax({
             type: "POST",
             url: url,
             success: function (data) {
-                if (data.html) {
-                    $('#myModal').find('.modal-body').html(data.html);
-                    $('#myModal').find('.modal-title').html(data.title);
+                if (typeof obj.afterCallback != 'undefined' && obj.afterCallback == 'afterCallback') {
+                    th.setPopData(data);
+                } else if (data.status == 'success') {
+                    if (typeof obj.callback != 'undefined') {
+                        obj.callback();
+                    }
+                    th.success(data);
                 } else {
-
+                    th.error(data);
                 }
             },
             error: function (error) {
@@ -322,9 +356,34 @@ window.Virus = {
             async: true,
             data: formData,
             cache: false,
-            contentType: false,
-            processData: false,
+//            processData: false,
             timeout: 60000
         });
+    },
+    success: function (obj) {
+        $('#myModal').modal('hide');
+        $('#notification').modal('show');
+        $('#notification').find('.modal-body').html('<div class="alert alert-danger" _vik>' + obj.msg + '</div>');
+        setTimeout(function () {
+            $('#notification').modal('hide');
+        }, 2500)
+    },
+    error: function (obj) {
+        $('#notification').modal('show');
+        var msg = '', error;
+        if (typeof obj.errors != 'undefined' && obj.errors) {
+            for (var i in obj.errors) {
+                msg += '<p class="alert alert-danger" _vik>' + obj.errors[i] + '</p>';
+                console.log(obj.errors[i], i);
+            }
+        }
+        $('#notification').find('.modal-body').html('<div _vik>' + msg + '</div>');
+        setTimeout(function () {
+            $('#notification').modal('hide');
+        }, 3200)
+    },
+    dashboard: function () {
+        jQuery('#showJson').hide();
+        jQuery('#maincontainer').html('Welcome ')
     }
 };

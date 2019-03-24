@@ -39,18 +39,18 @@ class UsersController extends Controller {
 
 
         $validator = Validator::make($request->all(), [
-                    'email' => 'required|email',
-                    'password' => 'required'
+                    'login_mail' => 'required|email',
+                    'login_pass' => 'required'
         ]);
         if (!$validator->fails()) {
 
-            $user = User::where('email', $request->input('email'))->first();
+            $user = User::where('email', $request->input('login_mail'))->first();
 
-            if ($user && (md5($request->input('password')) == $user->password)) {
+            if ($user && (md5($request->input('login_pass')) == $user->password)) {
 
                 $apikey = base64_encode(str_random(40));
-                $r = User::where('email', $request->input('email'))->update(['api_token' => "$apikey"]);
-                return response()->json(['status' => 'success', 'r' => $r, 'user' => $user->toArray(), 'api_token' => $apikey]);
+                $r =Usertoken::create(['user_id'=>$user->id,'api_token' => "$apikey",'social_media_type'=>'login']);
+                return response()->json(['status' => 'success', 'msg'=>'Login successfully','api_token' => $apikey]);
             } else {
                 return response()->json(['status' => 'notValid', 'errors' => array('E-mail or Password not match')], 200);
             }
@@ -66,6 +66,11 @@ class UsersController extends Controller {
         if(isset($_POST['from']) && $_POST['from']=='googleplus'){
             $_POST['password']=str_random(15);
             $type="googleplus";
+        }else{
+            $_POST['password']=$_POST['reg_pass'];
+            $_POST['email']=$_POST['reg_mail'];
+            $_POST['name']=$_POST['reg_name'];
+        
         }
         $validator = Validator::make($_POST, [
                     'name' => 'required',
@@ -82,7 +87,7 @@ class UsersController extends Controller {
             ))->id;
             $apikey = base64_encode(str_random(40));
             $u = Usertoken::create(['user_id'=>$id,'api_token' => "$apikey",'social_media_type'=>$type]);
-            return response()->json(['status' => 'success', 'api_token' => $apikey]);
+            return response()->json(['status' => 'success','msg'=>'Registration successfully', 'api_token' => $apikey]);
         } else {
             return response()->json(['status' => 'notValid', 'errors' => $validator->errors()->all()], 200);
         }

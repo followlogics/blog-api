@@ -36,7 +36,7 @@ $router->get('/register[/{id}]', function ($id = NULL) use ($router) {
 });
 $router->get('app-files/', 'AppfilesController@getall');
 $router->group(['middleware' => 'auth'], function () use ($router) {
-    $router->post('/desktop', function (Request $request) use ($router) {
+    $router->post('/dashboard', function (Request $request) use ($router) {
         $post=file_get_contents('php://input');
         return array('status'=>'success','user'=>$post);
     });

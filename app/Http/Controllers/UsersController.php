@@ -80,7 +80,7 @@ class UsersController extends Controller {
         if (!$validator->fails()) {
             $id=User::create(array(
                 'email' => $_POST['email'],
-                'password' => $_POST['password'],
+                'password' => md5($_POST['password']),
                 'name' => $_POST['name'],
                 'address'=>'India',
                 'dob'=>date('Y-m-d')

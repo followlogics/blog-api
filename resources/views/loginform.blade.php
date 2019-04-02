@@ -44,7 +44,8 @@
 jQuery(document).on('submit','#loginForm',function(e){
     e.preventDefault();
     var data=jQuery('#loginForm').serialize();
-    Virus.api({url: 'login', sdata:data ,callback:function(){
+    Virus.api({url: 'login', sdata:data ,callback:function(data){
+            localStorage.setItem('api_token',data.api_token);
             Virus.openTargetBlock('dashboard');
     }});
 })

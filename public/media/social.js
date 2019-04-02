@@ -335,15 +335,19 @@ window.Virus = {
         } else {
             formData = obj.sdata;
         }
+        var token = localStorage.getItem('api_token');
         jQuery.ajax({
             type: "POST",
             url: url,
+            beforeSend: function (request) {
+                request.setRequestHeader("api-token", token);
+            },
             success: function (data) {
                 if (typeof obj.afterCallback != 'undefined' && obj.afterCallback == 'afterCallback') {
                     th.setPopData(data);
                 } else if (data.status == 'success') {
                     if (typeof obj.callback != 'undefined') {
-                        obj.callback();
+                        obj.callback(data);
                     }
                     th.success(data);
                 } else {
@@ -382,8 +386,18 @@ window.Virus = {
             $('#notification').modal('hide');
         }, 3200)
     },
-    dashboard: function () {
+    dashboard: function (data) {
         jQuery('#showJson').hide();
-        jQuery('#maincontainer').html('Welcome ')
+        jQuery('#maincontainer').html('Loading . . . ');
+        this.setMainContain('dashboard', {vik: "ko"});
+    },
+    setMainContain: function (url, data) {
+        this.api({url: url, sdata: data, callback: function (data) {
+                console.log(data);
+                if (typeof data.html != 'undefined') {
+                    jQuery("title").text("Blog :: " + data.title);
+                    jQuery('#maincontainer').html(data.html);
+                }
+            }});
     }
 };

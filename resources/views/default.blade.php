@@ -45,7 +45,7 @@ echo fread($myfile, filesize($configFile));
     <body _vik id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
         <div id="maincontainer" _vik>
         @include('homemenu')
-        </div>
+        
         <?php
         $configFile = (base_path('public/media/config.json'));
         $myfile = fopen($configFile, "r+") or die("Unable to open file!");
@@ -60,6 +60,50 @@ echo fread($myfile, filesize($configFile));
         }
         fclose($myfile);
         ?>
+     <section id="about" class="section-padding" _vik>
+      <div class="container" _vik>
+        <div class="row" _vik>
+          <div class="col-12" _vik>
+            <div class="section-title-header text-center" _vik>
+              <h1 class="section-title wow fadeInUp" data-wow-delay="0.2s" _vik>About us</h1>
+            </div>
+          </div>
+        </div>
+        <div class="row" _vik>
+          <div class="col-xs-12 col-md-6 col-lg-4" _vik>
+            <div class="about-item" _vik>
+              <img class="img-fluid" src="assets/img/about/img1.jpg" alt="" _vik>
+              <div class="about-text" _vik>
+                <h3 _vik><a href="#" _vik>Our Mission</a></h3>
+                <p _vik>Lorem ipsum dolor sit amet, consectetuer commodo ligula eget dolor.</p>
+                <a _vik class="btn btn-common btn-rm" href="#">Read More</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-6 col-lg-4" _vik>
+            <div class="about-item" _vik>
+              <img class="img-fluid" _vik src="assets/img/about/img2.jpg" alt="">
+              <div class="about-text" _vik>
+                <h3 _vik><a href="#" _vik>What you will learn.</a></h3>
+                <p _vik>Lorem ipsum dolor sit amet, consectetuer commodo ligula eget dolor.</p>
+                <a class="btn btn-common btn-rm" _vik href="#">Read More</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-6 col-lg-4" _vik>
+            <div class="about-item" _vik>
+              <img class="img-fluid" _vik src="assets/img/about/img3.jpg" alt="">
+              <div class="about-text" _vik>
+                <h3 _vik><a _vik href="#">What are the benifits.</a></h3>
+                <p _vik>Lorem ipsum dolor sit amet, consectetuer commodo ligula eget dolor.</p>
+                <a _vik class="btn btn-common btn-rm" href="#">Read More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+            </div>
         <div class="container" id="showJson" _vik>
             <div _vik class="row">
                 <div class="col-sm-6" _vik >
@@ -88,7 +132,7 @@ echo fread($myfile, filesize($configFile));
             <div _vik class="modal-dialog modal-dialog-centered modal-sm">
                 <div _vik class="modal-content">
                     <div _vik class="modal-header">
-                        <h4 _vik class="modal-title">Loding...</h4>
+                        <h5 _vik class="modal-title">Loding...</h5>
                         <button _vik type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div _vik class="modal-body">
@@ -226,5 +270,80 @@ echo fread($myfile, filesize($configFile));
 //            }
         </script>
         <script src="https://apis.google.com/js/platform.js" ></script>
+        <div id="mover" _vik>
+         <div id="moverHolder" _vik ontouchmove="movesLearing(event)">Mover</div>
+          This is testing.
+        </div>
+        <!-- Footer Section Start -->
+    <footer class="footer-area section-padding" _vik>
+      <div class="container" _vik>
+        <div class="row" _vik>
+          <div class="col-md-6 col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" _vik>
+            <h3 _vik><img src="assets/img/logo.png" _vik alt="">TESTING</h3>
+            <p _vik>
+              Vik ipsum dolor sit ipsum dolor sit ipsum dolor sit ipsum dolor sit ipsum dolor sit ipsum dolor sit
+            </p>
+          </div>
+          <div class="col-md-6 col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" _vik>
+            <h3 _vik>QUICK LINKS</h3>
+            <ul _vik>
+              <li _vik><a _vik href="#">About Conference</a></li>
+              <li _vik><a _vik href="#">Our Speakers</a></li>
+              <li><a href="#">Event Shedule</a></li>
+              <li _vik><a _vik href="#">Latest News</a></li>
+              <li><a href="#">Event Photo Gallery</a></li>
+            </ul>
+          </div>
+          <div class="col-md-6 col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" _vik>
+            <h3 _vik>RECENT POSTS</h3>
+            <ul _vik class="image-list">
+              <li _vik>
+                <figure class="overlay">
+                  <img class="img-fluid" src="assets/img/art/a1.jpg" alt="">
+                </figure>
+                <div class="post-content" _vik>
+                  <h6 class="post-title" _vik> <a _vik href="blog-single.html">Lorem ipsm dolor sumit.</a> </h6>
+                  <div _vik class="meta"><span class="date">May 12, 2019</span></div>
+                </div>
+              </li>
+              <li _vik>
+                <figure class="overlay" _vik>
+                  <img class="img-fluid" src="assets/img/art/a2.jpg" alt="">
+                </figure>
+                <div class="post-content">
+                  <h6 class="post-title"><a href="blog-single.html">Lorem ipsm dolor sumit.</a></h6>
+                  <div class="meta"><span class="date">May 01, 2019</span></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-6 col-lg-3 col-sm-6 col-xs-12 wow fadeInUp" _vik>
+            <h3 _vik>SUBSCRIBE US</h3>
+            <div class="widget" _vik>
+              <div class="newsletter-wrapper" _vik>
+                  <form method="post" id="subscribe-form" onsubmit="return false" name="subscribe-form" class="validate" _vik>
+                  <div class="form-group is-empty" _vik>
+                    <input _vik type="email" value="" name="Email" class="form-control" id="EMAIL" placeholder="Your email" required="">
+                    <button _vik type="submit" name="subscribe" id="subscribes" class="btn btn-common sub-btn"><i _vik class="fas fa-rocket"></i></button>
+                    <div _vik class="clearfix"></div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- /.widget -->
+            <div class="widget" _vik>
+              <h3 _vik>FOLLOW US ON</h3>
+              <ul class="footer-social" _vik>
+                <li _vik><a class="" _vik href="#"><i _vik class="fab fa-facebook fa-2x"></i></a></li>
+                <li _vik><a class="" _vik href="#"><i _vik class="fab fa-twitter fa-2x"></i></a></li>
+                <li _vik><a class="" _vik href="#"><i _vik class="fab fa-linkedin fa-2x"></i></a></li>
+                <li _vik><a class="" _vik href="#"><i _vik class="fab fa-google-plus-square fa-2x"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Footer Section End -->
     </body>
 </html>

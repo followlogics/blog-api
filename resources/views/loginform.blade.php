@@ -37,7 +37,7 @@
         Don't have an account? <a  data-href="signup" class="" href="signup" _vik>Sign Up</a>
     </div>
     <div class="d-flex justify-content-center" _vik>
-        <a href="#" _vik>Forgot your password?</a>
+        <a href="forgot" data-href="forgot" _vik>Forgot your password?</a>
     </div>
 </div>
 <script >

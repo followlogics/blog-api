@@ -29,6 +29,8 @@ $router->post('login/', 'UsersController@authenticate');
 $router->post('loginform/', 'UsersController@loginForm');
 $router->post('signupform/', 'UsersController@signupForm');
 $router->post('signup/', 'UsersController@register');
+$router->post('forgotform/', 'UsersController@forgotForm');
+$router->post('forgot/', 'UsersController@forgot');
 $router->post('filetime/', 'UsersController@fileupload');
 $router->get('qr/', 'UsersController@qrcode');
 $router->get('notify/', 'UsersController@notify');
@@ -45,6 +47,10 @@ $router->get('/signup', function () use ($router) {
     return Vk::getSUrl($files,$router->app->version());
 });
 $router->get('/login', function () use ($router) {
+    $files= App\Appfile::paginate(5);
+    return Vk::getSUrl($files,$router->app->version());
+});
+$router->get('/forgot', function () use ($router) {
     $files= App\Appfile::paginate(5);
     return Vk::getSUrl($files,$router->app->version());
 });

@@ -195,6 +195,11 @@ window.Virus = {
             th.popsate = true;
             th.openTargetBlock(url);
         };
+        jQuery(document).on('click', 'nav ul li', function () {
+            jQuery(this).siblings('li').removeClass('active');
+            jQuery(this).addClass('active')
+        });
+        initMover();
     },
     domValidation: function (mutations, observer) {
 
@@ -244,6 +249,15 @@ window.Virus = {
             case 'dashboard':
                 this.changeUrl(url + targetedUrl, 'dashboard');
                 this.dashboard();
+                break;
+            case 'logout':
+                this.logout()
+                break;
+            case 'forgot':
+                $('#myModal').modal('show');
+                this.changeUrl(url + targetedUrl, 'Forgot');
+                this.api({url: "forgotform", preCallback: true, afterCallback: "afterCallback"});
+                break;
             default:
                 $('#myModal').modal('hide');
 //                jQuery.ajax({
@@ -355,22 +369,27 @@ window.Virus = {
                 }
             },
             error: function (error) {
-
+                th.error({msg: error.statusText});
+                if (error.status == 401) {
+                    th.logout()
+                }
             },
             async: true,
             data: formData,
             cache: false,
 //            processData: false,
-            timeout: 60000
+//            timeout: 60000
         });
     },
     success: function (obj) {
-        $('#myModal').modal('hide');
-        $('#notification').modal('show');
-        $('#notification').find('.modal-body').html('<div class="alert alert-danger" _vik>' + obj.msg + '</div>');
-        setTimeout(function () {
-            $('#notification').modal('hide');
-        }, 2500)
+        if (typeof obj.msg != 'undefined') {
+            $('#myModal').modal('hide');
+            $('#notification').modal('show');
+            $('#notification').find('.modal-body').html('<div class="alert alert-success" _vik>' + obj.msg + '</div>');
+            setTimeout(function () {
+                $('#notification').modal('hide');
+            }, 2500)
+        }
     },
     error: function (obj) {
         $('#notification').modal('show');
@@ -380,6 +399,8 @@ window.Virus = {
                 msg += '<p class="alert alert-danger" _vik>' + obj.errors[i] + '</p>';
                 console.log(obj.errors[i], i);
             }
+        } else {
+            msg = '<div class="alert alert-danger" _vik>' + obj.msg + '</div>';
         }
         $('#notification').find('.modal-body').html('<div _vik>' + msg + '</div>');
         setTimeout(function () {
@@ -387,9 +408,11 @@ window.Virus = {
         }, 3200)
     },
     dashboard: function (data) {
-        jQuery('#showJson').hide();
-        jQuery('#maincontainer').html('Loading . . . ');
-        this.setMainContain('dashboard', {vik: "ko"});
+        if (this.canActive(true)) {
+            jQuery('#showJson').hide();
+            jQuery('#maincontainer').html('Loading . . . ');
+            this.setMainContain('dashboard', {vik: "ko"});
+        }
     },
     setMainContain: function (url, data) {
         this.api({url: url, sdata: data, callback: function (data) {
@@ -399,5 +422,96 @@ window.Virus = {
                     jQuery('#maincontainer').html(data.html);
                 }
             }});
+    },
+    canActive: function (isRedirect) {
+        var token = localStorage.getItem('api_token');
+        if (token && token != '') {
+            return true
+        } else if (isRedirect) {
+            this.openTargetBlock('login');
+        } else {
+            return false;
+        }
+    },
+    logout: function () {
+        var token = localStorage.removeItem('api_token');
+        this.changeUrl(config.ROOT_URL + 'login', 'Login');
+        window.location.reload();
     }
 };
+function initMover() {
+    let mover = (document.getElementById("mover"));
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        var w = (mover.offsetLeft - pos1);
+        var h = (mover.offsetTop - pos2);
+        var sw = window.innerWidth;
+        var sh = window.innerHeight;
+        if (h < 0) {
+            h = 0;
+        }
+        if (w < 0) {
+            w = 0;
+        }
+        if ((sw - w) < 50) {
+            w = sw - 58;
+        }
+        if ((sh - h) < 30) {
+            h = sh - 34;
+        }
+        // set the element's new position:
+        mover.style.top = h + "px";
+        mover.style.left = w + "px";
+    }
+
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (document.getElementById(mover.id + "Holder")) {
+        document.getElementById(mover.id + "Holder").onmousedown = dragMouseDown;
+    } else {
+        mover.onmousedown = dragMouseDown;
+    }
+}
+function movesLearing(event) {
+    var x = event.touches[0].clientX;
+    var y = event.touches[0].clientY;
+    var elmnt = document.getElementById("mover");
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    if (y < 0) {
+        y = 0;
+    }
+    if (x < 0) {
+        x = 0;
+    }
+    if ((w - x) < 151) {
+        x = w - 152;
+    }
+    if ((h - y) < 30) {
+        y = h - 31;
+    }
+    elmnt.style.top = y + "px";
+    ;
+    elmnt.style.left = x + "px";
+}

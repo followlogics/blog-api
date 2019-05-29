@@ -22,6 +22,8 @@ use QRrsblock;
 use Illuminate\Support\Facades\File;
 use App\Appfile;
 use App\Usertoken;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class UsersController extends Controller {
 
@@ -49,8 +51,8 @@ class UsersController extends Controller {
             if ($user && (md5($request->input('login_pass')) == $user->password)) {
 
                 $apikey = base64_encode(str_random(40));
-                $r =Usertoken::create(['user_id'=>$user->id,'api_token' => "$apikey",'social_media_type'=>'login']);
-                return response()->json(['status' => 'success', 'msg'=>'Login successfully','api_token' => $apikey]);
+                $r = Usertoken::create(['user_id' => $user->id, 'api_token' => "$apikey", 'social_media_type' => 'login']);
+                return response()->json(['status' => 'success', 'msg' => 'Login successfully', 'api_token' => $apikey]);
             } else {
                 return response()->json(['status' => 'notValid', 'errors' => array('E-mail or Password not match')], 200);
             }
@@ -62,15 +64,14 @@ class UsersController extends Controller {
 
     public function register(Request $request) {
         $_POST = $request->all();
-        $type="direct";
-        if(isset($_POST['from']) && $_POST['from']=='googleplus'){
-            $_POST['password']=str_random(15);
-            $type="googleplus";
-        }else{
-            $_POST['password']=$_POST['reg_pass'];
-            $_POST['email']=$_POST['reg_mail'];
-            $_POST['name']=$_POST['reg_name'];
-        
+        $type = "direct";
+        if (isset($_POST['from']) && $_POST['from'] == 'googleplus') {
+            $_POST['password'] = str_random(15);
+            $type = "googleplus";
+        } else {
+            $_POST['password'] = $_POST['reg_pass'];
+            $_POST['email'] = $_POST['reg_mail'];
+            $_POST['name'] = $_POST['reg_name'];
         }
         $validator = Validator::make($_POST, [
                     'name' => 'required',
@@ -78,16 +79,16 @@ class UsersController extends Controller {
                     'password' => 'required',
         ]);
         if (!$validator->fails()) {
-            $id=User::create(array(
-                'email' => $_POST['email'],
-                'password' => md5($_POST['password']),
-                'name' => $_POST['name'],
-                'address'=>'India',
-                'dob'=>date('Y-m-d')
-            ))->id;
+            $id = User::create(array(
+                        'email' => $_POST['email'],
+                        'password' => md5($_POST['password']),
+                        'name' => $_POST['name'],
+                        'address' => 'India',
+                        'dob' => date('Y-m-d')
+                    ))->id;
             $apikey = base64_encode(str_random(40));
-            $u = Usertoken::create(['user_id'=>$id,'api_token' => "$apikey",'social_media_type'=>$type]);
-            return response()->json(['status' => 'success','msg'=>'Registration successfully', 'api_token' => $apikey]);
+            $u = Usertoken::create(['user_id' => $id, 'api_token' => "$apikey", 'social_media_type' => $type]);
+            return response()->json(['status' => 'success', 'msg' => 'Registration successfully', 'api_token' => $apikey]);
         } else {
             return response()->json(['status' => 'notValid', 'errors' => $validator->errors()->all()], 200);
         }
@@ -106,7 +107,7 @@ class UsersController extends Controller {
         $url = "https://fcm.googleapis.com/fcm/send";
         $token = (isset($_GET['token']) ? $_GET['token'] : NULL);
         $auth = (isset($_GET['auth']) ? $_GET['auth'] : NULL);
-        $authKey='AUTH KEY OR SERVER KEY';
+        $authKey = 'AUTH KEY OR SERVER KEY';
         $deviceToken = '{{DEVICE_TOKEN}}';
         if (isset($token)) {
             $deviceToken = $token;
@@ -142,7 +143,7 @@ class UsersController extends Controller {
         $this->validate($request, [
             'your_data' => 'required|image|mimes:apk,jpeg,png,jpg|max:12048',
         ]);
-        
+
         $file = $request->file('your_data');
         $realName = $file->getClientOriginalName();
         $picName = uniqid() . '_.' . $file->getClientOriginalExtension();
@@ -150,33 +151,97 @@ class UsersController extends Controller {
         $destinationPath = storage_path($path);
         File::makeDirectory($destinationPath, 0777, true, true);
         if ($file->move($destinationPath, $picName)) {
-         $f=Appfile::create(array(
-            'realfile_name' => $realName,
-            'file_name' => $picName
-         ));
+            $f = Appfile::create(array(
+                        'realfile_name' => $realName,
+                        'file_name' => $picName
+            ));
             return response()->json(['status' => 'success', 'fileName' => $f], 200);
         } else {
             return response()->json(['status' => 'notValid', 'errors' => $validator->errors()->all()], 200);
         }
     }
-    
-    public function loginForm(Request $request){
 
-        if($request->ajax()) {
-            $view=view('loginform')->render();
-           return response()->json(['html'=>$view,'title'=>'Login']);;
+    public function loginForm(Request $request) {
+
+        if ($request->ajax()) {
+            $view = view('loginform')->render();
+            return response()->json(['html' => $view, 'title' => 'Login']);
+            ;
         } else {
-          return view('loginform');
+            return view('loginform');
         }
     }
-    
-    public function signupForm(Request $request){
 
-        if($request->ajax()) {
-            $view=view('signupform')->render();
-           return response()->json(['html'=>$view,'title'=>'Sign Up']);;
+    public function signupForm(Request $request) {
+
+        if ($request->ajax()) {
+            $view = view('signupform')->render();
+            return response()->json(['html' => $view, 'title' => 'Sign Up']);
+            ;
         } else {
-          return view('loginform');
+            return view('loginform');
+        }
+    }
+
+    public function forgotForm(Request $request) {
+        if ($request->ajax()) {
+            $view = view('forgotform')->render();
+            return response()->json(['html' => $view, 'title' => 'Forgot Password']);
+        } else {
+            return view('forgot');
+        }
+    }
+
+    public function forgot(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'forgot_mail' => 'required|email'
+        ]);
+        if (!$validator->fails()) {
+            $user = User::where('email', $request->input('forgot_mail'))->first();
+             if ($user) {
+
+                $apikey = base64_encode(str_random(40));
+                return response()->json(['status' => 'success', 'msg' => 'Send Link Successfully']);
+            } else {
+                return response()->json(['status' => 'notValid', 'errors' => array('E-mail not found')], 200);
+            }
+        } else {
+            return response()->json(['status' => 'notValid', 'errors' => $validator->errors()->all()], 200);
+        }
+    }
+    function mailTo(){
+        
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail = new PHPMailer(); // create a new object
+            $mail->IsSMTP(); // enable SMTP
+            $mail->SMTPDebug = 2; // debugging: 1 = errors and messages, 2 = messages only
+            $mail->SMTPAuth = true; // authentication enabled
+            $mail->SMTPSecure = 'tls'; // secure transfer enabled REQUIRED for GMail
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+            $mail->Host = $host;
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587; // or 465
+            $mail->IsHTML(true);
+            $mail->Username = 'example-1-2-3@gmail.com';
+            $mail->Password = 'passswo';
+            $mail->setFrom('example-3-2-1@gmail.com', "Follow");
+            $mail->Subject = 'Testing';
+            $mail->Body = 'Hi,<br/><br/>vivivkvkvvkvkv<br>vivivkvkvvkvkv<br>vivivkvkvvkvkv<br>vivivkvkvvkvkv<br>';
+            $mail->addAddress('example-1-2-3@gmail.com');
+            $mail->addReplyTo('example-reply@gmail.com', 'Follow');
+            $mail->send();
+            echo 'Message has been sent';
+        } catch (Exception $e) {
+            echo 'Message could not be sent.';
+            echo 'Mailer Error: ' . $mail->ErrorInfo;
         }
     }
 

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Vk;
 
 class AppServiceProvider extends ServiceProvider {
 
@@ -21,7 +22,7 @@ class AppServiceProvider extends ServiceProvider {
      * @return void
      */
     public function boot() {
-        view()->share('title', 'Blog');
+        view()->share('title', Vk::title());
     }
 
 }

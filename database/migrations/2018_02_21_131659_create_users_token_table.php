@@ -22,7 +22,7 @@ class CreateUsersTokenTable extends Migration {
             $table->timestamps();
             $table->index('user_id');
         });
-        DB::statement('ALTER TABLE `users_token` ADD FULLTEXT `api_token` (`api_token`)');
+
     }
 
     /**

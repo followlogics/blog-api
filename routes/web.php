@@ -11,6 +11,7 @@
   |
  */
 use Illuminate\Http\Request;
+use Vk;
 $router->options(
     '/{any:.*}', 
     [
@@ -21,19 +22,39 @@ $router->options(
     ]
 );
 $router->get('/', function () use ($router) {
-    return view('default',['name' => 'Virus']);//$router->app->version();
-
+    $files= App\Appfile::paginate(5);
+    return view('default',['files' => $files,'name' => $router->app->version()]);
 });
 $router->post('login/', 'UsersController@authenticate');
+$router->post('loginform/', 'UsersController@loginForm');
+$router->post('signupform/', 'UsersController@signupForm');
 $router->post('signup/', 'UsersController@register');
+$router->post('forgotform/', 'UsersController@forgotForm');
+$router->post('forgot/', 'UsersController@forgot');
+$router->post('filetime/', 'UsersController@fileupload');
 $router->get('qr/', 'UsersController@qrcode');
+$router->get('notify/', 'UsersController@notify');
 $router->get('/register[/{id}]', function ($id = NULL) use ($router) {
     return 'Hello' . $id;
 });
+$router->get('app-files/', 'AppfilesController@getall');
+$router->get('/dashboard', function () use ($router) {
+    $files= App\Appfile::paginate(5);
+    return Vk::getSUrl($files,$router->app->version());
+});
+$router->get('/signup', function () use ($router) {
+    $files= App\Appfile::paginate(5);
+    return Vk::getSUrl($files,$router->app->version());
+});
+$router->get('/login', function () use ($router) {
+    $files= App\Appfile::paginate(5);
+    return Vk::getSUrl($files,$router->app->version());
+});
+$router->get('/forgot', function () use ($router) {
+    $files= App\Appfile::paginate(5);
+    return Vk::getSUrl($files,$router->app->version());
+});
 $router->group(['middleware' => 'auth'], function () use ($router) {
-    $router->post('/desktop', function (Request $request) use ($router) {
-        $post=file_get_contents('php://input');
-        return array('status'=>'success','user'=>$post);
-    });
+    $router->post('/dashboard', 'DashboardController@index');
     $router->post('/addItem', 'EventsController@addEvent');
 });

@@ -36,7 +36,7 @@ class Authenticate {
             return response(json_encode(array('error' => 'Unauthorized.')), 401);
         }
         /* add Allowed Domain*/
-        $allowedDomains = array("http://localhost:8100");
+        $allowedDomains = array("http://localhost:8100",'http://localhost');
         $origin = $request->server('HTTP_ORIGIN');
         if (in_array($origin, $allowedDomains)) {
             //Intercepts OPTIONS requests

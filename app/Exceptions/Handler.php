@@ -46,12 +46,21 @@ class Handler extends ExceptionHandler {
      */
     public function render($request, Exception $e) {
         if ($e instanceof MethodNotAllowedHttpException) {
-             return response(view("errors.404"), 200);
+            return response(view("errors.404"), 200);
         }
         if ($e instanceof NotFoundHttpException) {
             return response(view("errors.404"), 200);
         }
-        return parent::render($request, $e);
+        if ($request->ajax()) {
+            $rendered = parent::render($request, $e);
+            return response()->json([
+                        'status' => 'error',
+                        'code' => $rendered->getStatusCode(),
+                        'message' => $e->getMessage()
+            ]);
+        } else {
+            return parent::render($request, $e);
+        }
     }
 
 }

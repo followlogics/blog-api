@@ -21,7 +21,7 @@
         </div>
     </div>
 </nav>
-<div id="demo" class="carousel slide" data-ride="carousel" _vik>
+<div id="demo" class="carousel slide hide" data-ride="carousel" _vik>
 
     <!-- Indicators -->
     <ul class="carousel-indicators" _vik>
@@ -54,7 +54,7 @@
                     <span class="icon-menu" _vik></span>
                     <span class="icon-menu" _vik></span>
                 </button>
-                <a href="#" class="navbar-brand" _vik><img src="public/me.jpg" alt="" _vik></a>
+                <a href="#" class="navbar-brand" _vik><img src="public/me.jpg" alt="Logo" _vik></a>
             </div>
             <div class="collapse navbar-collapse" id="main-navbar" _vik>
                 <ul class="navbar-nav mr-auto w-100 justify-content-end" _vik>
@@ -66,11 +66,6 @@
                     <li class="nav-item" _vik>
                         <a class="nav-link" href="#about" _vik>
                             About
-                        </a>
-                    </li>
-                    <li class="nav-item" _vik>
-                        <a class="nav-link" href="#schedules" _vik>
-                            schedules
                         </a>
                     </li>
                     <li class="nav-item" _vik>
@@ -131,5 +126,18 @@
         <!-- Mobile Menu End -->
 
     </nav>
+    <!--<img _vik src="public/img/banner.jpg" />-->
     <!-- Navbar End -->
 </header>
+<section class="services section-padding main-banner" _vik>
+    <div class="container" _vik>
+        <div class="row" _vik>
+            <div class="col-sm-6" _vik>
+                <form onsubmit="" _vik>
+                    <input _vik type="text" placeholder="Enter Email for Signup" name="Signup" class="form-control" />
+                    <button _vik type="button" class="btn btn-primary">Setup your panel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

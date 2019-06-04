@@ -195,9 +195,15 @@ window.Virus = {
             th.popsate = true;
             th.openTargetBlock(url);
         };
-        jQuery(document).on('click', 'nav ul li', function () {
+        jQuery(document).on('click', 'nav ul li', function (e) {
+            e.preventDefault();
             jQuery(this).siblings('li').removeClass('active');
-            jQuery(this).addClass('active')
+            jQuery(this).addClass('active');
+            Virus.openTargetBlock($(e.target).data('href'));
+        });
+        jQuery(document).on('click', 'a', function (e) {
+            e.preventDefault();
+            Virus.openTargetBlock($(e.target).data('href'));
         });
         initMover();
     },
@@ -249,6 +255,15 @@ window.Virus = {
             case 'dashboard':
                 this.changeUrl(url + targetedUrl, 'dashboard');
                 this.dashboard();
+                break;
+            case 'profile':
+                let th = this;
+                this.api({url: 'profile', callback: function (r) {
+                        if (r.status == 'success') {
+                            th.changeUrl(url + targetedUrl, 'Profile');
+                            jQuery('#primaryarea').html(r.html);
+                        }
+                    }});
                 break;
             case 'logout':
                 this.logout()
@@ -416,7 +431,7 @@ window.Virus = {
     },
     setMainContain: function (url, data) {
         this.api({url: url, sdata: data, callback: function (data) {
-                console.log(data);
+
                 if (typeof data.html != 'undefined') {
                     jQuery("title").text("Blog :: " + data.title);
                     jQuery('#maincontainer').html(data.html);

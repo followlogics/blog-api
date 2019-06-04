@@ -182,13 +182,7 @@ echo fread($myfile, filesize($configFile));
 
             observer.observe(document, {subtree: true, attributes: true, childList: true, characterData: true, attributeOldValue: true, attributeNewValue: true});
 
-            document.addEventListener('click', function (e) {
-                if (e.target.tagName == "A") {
-                    e.preventDefault();
-                    Virus.openTargetBlock($(e.target).data('href'));
-//                    console.log('BUTTON CLICKED', e);
-                }
-            })
+            
             window.onresize = function ()
             {
                 if ((window.outerHeight - window.innerHeight) > 100)

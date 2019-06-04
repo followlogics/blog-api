@@ -3,8 +3,10 @@
     Author     : vikas
 */
 body {
-    /*    background-color: powderblue;
-        height:1000px;*/
+    padding:0px !important;
+}
+body.modal-open{
+    padding:0px !important;
 }
 .v-h1{
     position:fixed;
@@ -552,4 +554,10 @@ button:focus {
 
 .navbar-brand img{
     width: 75px;
+}
+.main-banner{
+    background: url('public/img/banner.jpg')
+}
+nav{
+    padding-right:0px !important;
 }

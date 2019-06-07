@@ -6,16 +6,13 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\User;
 
-/**
- * Description of DashboardController
- *
- * @author techelogy
- */
+
 class DashboardController extends Controller {
 
     function __construct() {
-        $this->middleware('auth:api');
+        $this->middleware('auth');
     }
 
     public function index(Request $request) {
@@ -25,6 +22,17 @@ class DashboardController extends Controller {
             return response()->json(["status" => 'success','html' => $view, 'title' => 'Dashboard']);
         } else {
             return view('dashboard.index',['isAjax'=>FALSE]);
+        }
+    }
+    
+    public function profile(Request $request) {
+        $user = $request->user();
+        $user = User::where('id', $user->user_id)->first()->toArray();
+        if ($request->ajax()) {
+            $view = view('profile.index', ['isAjax' => TRUE, 'user' => $user])->render();
+            return response()->json(["status" => 'success', 'html' => $view, 'title' => 'Profile']);
+        } else {
+            return view('profile.index', ['isAjax' => FALSE, 'user' => $user]);
         }
     }
 

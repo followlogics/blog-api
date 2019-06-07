@@ -12,7 +12,7 @@ use App\Event;
 class EventsController extends Controller {
 
     function __construct() {
-        $this->middleware('auth:api');
+        //$this->middleware('auth:api');
     }
 
     public function addEvent(Request $request) {

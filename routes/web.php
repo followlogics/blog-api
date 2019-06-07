@@ -11,6 +11,7 @@
   |
  */
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as response;
 use Vk;
 $router->options(
     '/{any:.*}', 
@@ -22,8 +23,7 @@ $router->options(
     ]
 );
 $router->get('/', function () use ($router) {
-    $files= App\Appfile::paginate(5);
-    return view('default',['files' => $files,'name' => $router->app->version()]);
+    return redirect('dashboard');
 });
 $router->post('login/', 'UsersController@authenticate');
 $router->post('loginform/', 'UsersController@loginForm');
@@ -56,5 +56,6 @@ $router->get('/forgot', function () use ($router) {
 });
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->post('/dashboard', 'DashboardController@index');
+    $router->post('/profile', 'DashboardController@profile');
     $router->post('/addItem', 'EventsController@addEvent');
 });

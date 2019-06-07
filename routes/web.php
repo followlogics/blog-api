@@ -54,8 +54,8 @@ $router->get('/forgot', function () use ($router) {
     $files= App\Appfile::paginate(5);
     return Vk::getSUrl($files,$router->app->version());
 });
-//$router->group(['middleware' => 'auth'], function () use ($router) {
+$router->group(['middleware' => 'auth'], function () use ($router) {
     $router->post('/dashboard', 'DashboardController@index');
     $router->post('/profile', 'DashboardController@profile');
     $router->post('/addItem', 'EventsController@addEvent');
-//});
+});

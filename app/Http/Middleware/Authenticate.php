@@ -37,7 +37,8 @@ class Authenticate {
         }
         $response = response('', 200);
         /* add Allowed Domain*/
-        $allowedDomains = array("http://localhost:8100",'http://localhost','http://vkrab.herokuapp.com','https://vkrab.herokuapp.com');
+        $origin=env('ORIGIN');
+        $allowedDomains =explode(',',$origin);
         $origin = $request->server('HTTP_ORIGIN');
         if (in_array($origin, $allowedDomains)) {
             //Intercepts OPTIONS requests

@@ -35,11 +35,13 @@ class Authenticate {
         if ($this->auth->guard($guard)->guest()) {
             return response(json_encode(array('error' => 'Unauthorized.')), 401);
         }
+        $response = response('', 200);
         /* add Allowed Domain*/
-        $allowedDomains = array("http://localhost:8100",'http://localhost');
+        $allowedDomains = array("http://localhost:8100",'http://localhost','http://vkrab.herokuapp.com','https://vkrab.herokuapp.com');
         $origin = $request->server('HTTP_ORIGIN');
         if (in_array($origin, $allowedDomains)) {
             //Intercepts OPTIONS requests
+            
             if ($request->isMethod('OPTIONS')) {
                 $response = response('', 200);
             } else {

@@ -12,7 +12,7 @@ use App\User;
 class DashboardController extends Controller {
 
     function __construct() {
-        //$this->middleware('auth:api');
+        $this->middleware('auth');
     }
 
     public function index(Request $request) {

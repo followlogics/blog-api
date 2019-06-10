@@ -16,7 +16,6 @@ window.fbAsyncInit = function () {
     });
     // FB.AppEvents.logPageView();
 };
-
 (function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) {
@@ -27,7 +26,6 @@ window.fbAsyncInit = function () {
     js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-
 function login() {
     FB.login(function (response) {
         if (response.status === 'connected') {
@@ -74,7 +72,6 @@ function getFrdlist() {
     );
     FB.api('/' + ids + '/friendlists', 'GET', {fields: 'name,id'}, function (response) {
         console.log(response);
-
     });
 }
 
@@ -155,7 +152,6 @@ function validateString(txt) {
     var C1 = (txt.match(/\[/g) || []).length;
     var C2 = (txt.match(/]/g) || []).length;
     var c3 = (txt.match(/:/g) || []).length;
-
     if (c1 == c2 && C1 == C2 && c3) {
         return true;
     } else {
@@ -164,7 +160,7 @@ function validateString(txt) {
 }
 window.onload = function () {
     var bodyList = document.querySelector("body"), observer = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
+        mutations.length && mutations.forEach(function (mutation) {
             if (oldHref != document.location.href) {
                 oldHref = document.location.href;
 //                console.log('BUTTON CLICKED ');
@@ -186,14 +182,22 @@ window.onresize = function () {
 /* DOM content change detect */
 window.Virus = {
     popsate: false,
+    urlsearch: '',
+    getOurUrl: function (curl) {
+        var murl = window.location.href.split('?');
+        if (typeof curl != 'undefined') {
+            murl = curl.split('?');
+        }
+        var url = murl[0].replace(config.ROOT_URL, '');
+        this.urlsearch = (typeof murl[1] != 'undefined' ? murl[1] : '');
+        return url;
+    },
     starts: function () {
-        var url = window.location.href.replace(config.ROOT_URL, '');
         var th = this;
-        this.openTargetBlock(url);
+        this.openTargetBlock(this.getOurUrl());
         window.onpopstate = function (event) {
-            var url = window.location.href.replace(config.ROOT_URL, '');
             th.popsate = true;
-            th.openTargetBlock(url);
+            th.openTargetBlock(this.getOurUrl());
         };
         jQuery(document).on('click', 'nav ul li', function (e) {
             e.preventDefault();
@@ -203,7 +207,12 @@ window.Virus = {
         });
         jQuery(document).on('click', 'a', function (e) {
             e.preventDefault();
-            Virus.openTargetBlock($(e.target).data('href'));
+            var u = $(e.target).data('href');
+            var r = Virus.getOurUrl(jQuery(this).attr('href'));
+            if (u) {
+                r = u;
+            }
+            Virus.openTargetBlock(r);
         });
         initMover();
     },
@@ -272,6 +281,9 @@ window.Virus = {
                 $('#myModal').modal('show');
                 this.changeUrl(url + targetedUrl, 'Forgot');
                 this.api({url: "forgotform", preCallback: true, afterCallback: "afterCallback"});
+                break;
+            case 'public/dashboard':
+                this.setMainContain('dashboard', {});
                 break;
             default:
                 $('#myModal').modal('hide');
@@ -354,7 +366,7 @@ window.Virus = {
         if (typeof obj.preCallback != 'undefined' && obj.preCallback) {
             this.setPopData(obj);
         }
-        var url = (obj.url ? config.BASE_URL + obj.url : config.BASE_URL);
+        var url = (obj.url ? config.BASE_URL + obj.url : config.BASE_URL) + (this.urlsearch ? '?' + this.urlsearch : '');
         var data = (obj.data ? obj.data : '');
         var formData = new FormData();
         if (data) {
@@ -412,7 +424,7 @@ window.Virus = {
         if (typeof obj.errors != 'undefined' && obj.errors) {
             for (var i in obj.errors) {
                 msg += '<p class="alert alert-danger" _vik>' + obj.errors[i] + '</p>';
-                console.log(obj.errors[i], i);
+//                console.log(obj.errors[i], i);
             }
         } else {
             msg = '<div class="alert alert-danger" _vik>' + obj.msg + '</div>';

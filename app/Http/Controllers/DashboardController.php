@@ -17,7 +17,7 @@ class DashboardController extends Controller {
 
     public function index(Request $request) {
         $page=$request->query('page');
-        $user= User::paginate(5,['*'],'page',($page?$page:1));
+        $user= User::paginate(16,['*'],'page',($page?$page:1));
         if ($request->ajax()) {
             $view = view('dashboard.index',['isAjax'=>TRUE, 'users' => $user])->render();
             return response()->json(["status" => 'success','html' => $view, 'title' => 'Dashboard']);

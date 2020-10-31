@@ -36,13 +36,13 @@ class Authenticate {
             return response(json_encode(array('error' => 'Unauthorized.')), 401);
         }
         $response = response('', 200);
-        /* add Allowed Domain*/
-        $origin=env('ORIGIN');
-        $allowedDomains =explode(',',$origin);
+        /* add Allowed Domain */
+        $origin = env('ORIGIN');
+        $allowedDomains = explode(',', $origin);
         $origin = $request->server('HTTP_ORIGIN');
         if (in_array($origin, $allowedDomains)) {
             //Intercepts OPTIONS requests
-            
+
             if ($request->isMethod('OPTIONS')) {
                 $response = response('', 200);
             } else {
@@ -50,16 +50,18 @@ class Authenticate {
                 $response = $next($request);
             }
             // Adds headers to the response
+        } else {
+            return response(json_encode(array('error' => 'Unauthorized.')), 401);
         }
-            $response->header('Access-Control-Allow-Origin', '*');
-            $response->header('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-            $response->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
+        $response->header('Access-Control-Allow-Origin', '*');
+        $response->header('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+        $response->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
         return $response;
-       /* add Allowed Domain*/
-        
-       /* otherwise simply return $next($request);
-        * 
-        */
+        /* add Allowed Domain */
+
+        /* otherwise simply return $next($request);
+         * 
+         */
     }
 
 }

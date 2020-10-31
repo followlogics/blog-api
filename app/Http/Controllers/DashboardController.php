@@ -16,12 +16,13 @@ class DashboardController extends Controller {
     }
 
     public function index(Request $request) {
-
+        $page=$request->query('page');
+        $user= User::paginate(16,['*'],'page',($page?$page:1));
         if ($request->ajax()) {
-            $view = view('dashboard.index',['isAjax'=>TRUE])->render();
+            $view = view('dashboard.index',['isAjax'=>TRUE, 'users' => $user])->render();
             return response()->json(["status" => 'success','html' => $view, 'title' => 'Dashboard']);
         } else {
-            return view('dashboard.index',['isAjax'=>FALSE]);
+            return view('dashboard.index',['isAjax'=>FALSE, 'users' => $user]);
         }
     }
     
